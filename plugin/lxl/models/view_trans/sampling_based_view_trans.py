@@ -40,7 +40,7 @@ class SamplingBasedViewTrans(nn.Module):
                 input_dims = embed_dims
             conv = nn.Sequential(
                 nn.Conv2d(input_dims, embed_dims, kernel_size=kernel_size, stride=1, padding=padding, bias=True, device=device),
-                nn.BatchNorm2d(embed_dims, device=kwargs.get('device', 'cuda')),
+                nn.BatchNorm2d(embed_dims, device=device),
                 nn.ReLU(inplace=True))
             self.conv_layer.append(conv)
 

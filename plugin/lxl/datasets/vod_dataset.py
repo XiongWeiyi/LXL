@@ -15,6 +15,7 @@ from mmdet3d.datasets.custom_3d import Custom3DDataset
 from mmdet3d.datasets.pipelines import Compose
 
 from ..utils.LXL_utils import visualize
+from ..core.evaluation import vod_eval
 
 
 @DATASETS.register_module()
@@ -305,7 +306,7 @@ class VoDDataset(Custom3DDataset):
         gt_annos = [info['annos'] for info in self.data_infos]
 
         ap_dict = dict()
-        from mmdet3d.core.evaluation import vod_eval
+
         ap_result_str, ap_dict_ = vod_eval(gt_annos, result_files['pts_bbox'], self.CLASSES, custom_method=0)
         ap_result_str_roi, ap_dict_roi_ = vod_eval(gt_annos, result_files['pts_bbox'], self.CLASSES, custom_method=3)
         ap_dict_.update(ap_dict_roi_)

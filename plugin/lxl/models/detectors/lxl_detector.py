@@ -42,23 +42,10 @@ class LXLDetector(MVXTwoStageDetector):
             self.input_proj = Conv2d(in_channels, out_channels, kernel_size=1)
 
             self.depth_net = HEADS.build(depth_head)
-
-            embed_dims = self.pts_bbox_head.in_channels
-            view_cfg.update(embed_dims=embed_dims)
-
-            voxel_shape_2d = test_cfg['pts']['grid_size'][:2]
-            out_size_factor = test_cfg['pts']['out_size_factor']
-            voxel_shape_2d = [voxel_shape//out_size_factor for voxel_shape in voxel_shape_2d]
-            view_cfg.update(voxel_shape=[*voxel_shape_2d, view_cfg.pop('voxel_height')])
-
             self.view_trans = MODELS.build(view_cfg)
 
-            if fusion_cfg is not None:
-                fusion_cfg['embed_dims'] = embed_dims
-                self.fusion_layer = FUSION_LAYERS.build(fusion_cfg)
-
-        if pts_neck is not None:
-            self.pts_bev_proj = Conv2d(sum(self.pts_neck.out_channels), self.pts_bbox_head.in_channels, kernel_size=1)
+        if fusion_cfg is not None:
+            self.fusion_layer = FUSION_LAYERS.build(fusion_cfg)
 
         self.pretrained_img = pretrained_img
         self.pretrained_pts = pretrained_pts
@@ -70,7 +57,7 @@ class LXLDetector(MVXTwoStageDetector):
     def init_weights(self):
         branches_model_path = [self.pretrained_pts, self.pretrained_img]
         branches_load_keys = [self.load_pts, self.load_img]
-        for branch_id in range(2):  # load pretrained pts/img model
+        for branch_id in range(2):
             branch_model_path = branches_model_path[branch_id]
             branch_load_keys = branches_load_keys[branch_id]
             if branch_model_path is not None:
@@ -106,14 +93,8 @@ class LXLDetector(MVXTwoStageDetector):
 
         batch_size = coors[-1, 0] + 1
         x = self.pts_middle_encoder(voxel_features, coors, batch_size)
-
-        if getattr(self, 'kde', None) is not None:
-            density_feats = self.kde(pts, batch_size)
-            x = torch.cat((x, density_feats), dim=1)
-
         x = self.pts_backbone(x)
-        x = self.pts_neck(x)
-        x = self.pts_bev_proj(x[0])
+        x = self.pts_neck(x)[0]
         return x
 
 
@@ -122,7 +103,7 @@ class LXLDetector(MVXTwoStageDetector):
         if img is None:
             return None
         input_shape = img.shape[-2:]
-        # update real input shape of each single img
+
         for img_meta in img_metas:
             img_meta.update(input_shape=input_shape)
 
