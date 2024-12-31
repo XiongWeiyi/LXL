@@ -51,7 +51,8 @@ To evaluate the trained model, you can use the following command:
 python tools/test_v2.py plugin/lxl/configs/lxl/LXL_vod.py ${YOUR_CHECKPOINT_PATH}$ --eval bbox
 ```
 
-You can download our trained model [here](). Note that we have refactored our code and trained a new model, 
+You can download our trained model [here](https://drive.google.com/file/d/1bNDLZ1or1QKcnwfbp_OIP6yOseK30aE3/view?usp=sharing). 
+Note that we have refactored our code and trained a new model, 
 so that the performance is slightly different from that reported in our paper.
 
 ## Citation
