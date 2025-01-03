@@ -1,6 +1,6 @@
 # LXL: LiDAR Excluded Lean 3D Object Detection With 4D Imaging Radar and Camera Fusion
 
-Paper: [IEEE Xplore](https://ieeexplore.ieee.org/document/10588781/), [arXiv](https://arxiv.org/abs/2307.00724)
+Paper: [IEEE Xplore](https://ieeexplore.ieee.org/document/10268601), [arXiv](https://arxiv.org/abs/2307.00724)
 
 ## Usage
 
