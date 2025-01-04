@@ -16,8 +16,7 @@ model = dict(
         in_channels=[128, 256, 512],
         out_channels=128,
         num_csp_blocks=1),
-    pretrained_img='/mnt/e/RadarPointCloudSegmentation/Camera_and_4D_Imaging_Radar_Fusion_Perception'
-                   '/work_dir/result/yolox_s_8x8_300e_coco_20211121_095711-4592a793.pth',   # TODO: set path
+    pretrained_img='/mnt/e/LXL/work_dir/result/yolox_s_8x8_300e_coco_20211121_095711-4592a793.pth',   # TODO: set path
     load_img=['backbone', 'neck'],
     depth_head=dict(
         type='DepthHead',
