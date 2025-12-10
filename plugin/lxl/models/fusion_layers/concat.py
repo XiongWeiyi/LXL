@@ -6,7 +6,7 @@ from mmdet3d.models.builder import FUSION_LAYERS
 class ConcatFusion(nn.Module):
     def __init__(self, num_convs=2, embed_dims=128):
         super(ConcatFusion, self).__init__()
-        self.conv_after_fusion = []
+        self.conv_after_fusion = nn.ModuleList()
         for k in range(num_convs):
             if k == 0:
                 conv = nn.Sequential(
