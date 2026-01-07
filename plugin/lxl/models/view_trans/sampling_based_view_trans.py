@@ -32,7 +32,7 @@ class SamplingBasedViewTrans(nn.Module):
         self.initial_flag = True
 
         padding = tuple([(_k - 1) // 2 for _k in kernel_size])
-        self.conv_layer = []
+        self.conv_layer = nn.ModuleList()
         for k in range(num_convs):
             if k == 0:
                 input_dims = embed_dims * voxel_shape[2] * 2
